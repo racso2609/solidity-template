@@ -5,7 +5,7 @@ const { parseEther } = utils;
 
 const TOTAL_SUPPLY = parseEther("100");
 const TOKEN_PRICE = ethers.utils.parseUnits("1", "wei");
-const TOKENS_AVALIABLE = 750_000;
+const MAX_QUANTITY_TOKENS = 750_000;
 
 describe("Token Sale", () => {
 	beforeEach(async () => {
@@ -26,7 +26,7 @@ describe("Token Sale", () => {
 			// Provision 75% of all tokens to the token sale
 			await tokenInstance
 				.connect(admin)
-				.transfer(tokenSaleInstance.address, TOKENS_AVALIABLE);
+				.transfer(tokenSaleInstance.address, MAX_QUANTITY_TOKENS);
 		});
 		it("fail buy token msg value with wrong amount", async () => {
 			await expect(
@@ -35,16 +35,15 @@ describe("Token Sale", () => {
 				})
 			).to.be.revertedWith("wrong eth amount");
 		});
-		// ------------------ FALLOOOOO ---------------
-		it("fail purchase more tokens than avaliable", async () => {
-			const tokenAmount = TOKENS_AVALIABLE + 1;
+		it("fail purchase more tokens than max quantity tokens", async () => {
+			const tokenAmount = MAX_QUANTITY_TOKENS + 1;
 			await expect(
 				tokenSaleInstance.connect(buyer).buyTokens(tokenAmount, {
-					value: TOKEN_PRICE.mul(tokenAmount), 
+					value: TOKEN_PRICE.mul(tokenAmount),
 				})
+				// cSpell: disable next line
 			).to.be.revertedWith("cannot purchase more tokens than avaliable");
 		});
-		// ------- :( ------------------------
 		it("purchase tokens", async () => {
 			const tokenAmount = 1;
 			await tokenSaleInstance.connect(buyer).buyTokens(tokenAmount, {

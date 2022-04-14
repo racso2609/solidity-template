@@ -1,8 +1,6 @@
-
-  
 const CONTRACT_NAME = "Token";
 const { utils } = ethers;
-const TOTAL_SUPPLY = utils.parseEther('100');
+const TOTAL_SUPPLY = utils.parseEther("100");
 
 // modify when needed
 module.exports = async ({ getNamedAccounts, deployments }) => {
@@ -17,4 +15,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 	});
 };
 
-module.exports.tags = [CONTRACT_NAME,"ERC20"];
+module.exports.tags = [CONTRACT_NAME, "ERC20"];
